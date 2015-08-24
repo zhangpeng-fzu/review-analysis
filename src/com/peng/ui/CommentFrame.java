@@ -29,6 +29,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.peng.config.Config;
 import com.peng.java.Characteristic;
 import com.peng.java.Comment;
 
@@ -203,7 +204,7 @@ public class CommentFrame extends JFrame implements ActionListener{
 		    	JOptionPane.showMessageDialog(null, "请先输入商品ID", "提示", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			fileName = "D:/comment/"+id.getText()+".txt";
+			fileName = Config.FILEPATH +id.getText()+".txt";
 			File file = new File(fileName);
 			//如果文件不存在 去淘宝抓取
 			if ( ! file.exists()) {
