@@ -137,7 +137,7 @@ public class BuyFrame extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "请先选取文件", "提示", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			List<List<String>> list = ReadFile.getDatabase(path.getText().trim());
+			List<List<String>> list = new ReadFile().getDatabase(path.getText().trim());
 			size = list.size();
 			int i = 0;
 			for(List<String> keyList:list){

@@ -23,84 +23,48 @@ public class Characteristic {
 	public static List<String> bad = new ArrayList<String>();
 	public static Map<Integer, Integer> gradeMap = new HashMap<Integer, Integer>(){
 		{put(1,0);put(2,0);put(3,0);put(4,0);put(5,0);}};
-	
-	//分析结果保存
-	
-		
-		
-	public static List<String> positive(){
-		String fileName = Config.BASEPATH + "/com/peng/config/positive.txt";
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileName))));
-			String line = null;
-			while((line = reader.readLine())!= null){
-				positive.add(line.trim());
-			}
-			System.out.println("加载正面词完成");
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+	/**
+	 * 加载正面词 负面词 特征词 观点词
+	 */
+	public static void loadedVocabulary(){
+		if ( ! loadWord(Config.POSITIVE_PATH,positive)){
+			System.out.println("加载正面词失败");
+			return;
 		}
-		return positive;
-		
+		if ( ! loadWord(Config.NEGATIVE_PATH,negative)){
+			System.out.println("加载负面词失败");
+			return;
+		}
+		if ( ! loadWord(Config.CHARACTERISTIC_PATH,characteristic)){
+			System.out.println("加载特征词失败");
+			return;
+		}
+		if ( ! loadWord(Config.OPINION_PATH, opinion)){
+			System.out.println("加载观点词失败");
+			return;
+		}
+		System.out.println("加载所有词汇完成");
 	}
-	
-	public static List<String> characterist(){
-		String fileName = Config.BASEPATH + "/com/peng/config/Characteristic.txt";
+
+	private static boolean loadWord(String path,List<String> word){
+		BufferedReader reader = null;
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileName))));
+			File file = new File(path);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			String line = null;
 			while((line = reader.readLine())!= null){
-				characteristic.add(line.trim());
+				word.add(line.trim());
 			}
-			System.out.println("加载特征词完成");
 			reader.close();
+			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return characteristic;
-		
-	}
-	
-	public static List<String> opinion(){
-		String fileName = Config.BASEPATH + "/com/peng/config/OpinionWord.txt";
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileName))));
-			String line = null;
-			while((line = reader.readLine())!= null){
-				opinion.add(line.trim());
-			}
-			System.out.println("加载观点词完成");
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return opinion;
-		
-	}
-	public static List<String> negative(){
-		String fileName = Config.BASEPATH + "/com/peng/config/negative.txt";
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileName))));
-			String line = null;
-			while((line = reader.readLine())!= null){
-				negative.add(line.trim());
-			}
-			System.out.println("加载负面词完成");
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return negative;
-		
 	}
 	
 	public static Map<String, Integer> decide(int start,int end,Map<Integer,Map<String, Integer>> commentMap){

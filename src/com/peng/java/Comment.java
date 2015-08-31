@@ -68,7 +68,7 @@ public class Comment {
 		int maxPage = 0;
 		int currentPage = 0;
 		boolean flag = false;
-		String url = "http://rate.taobao.com/feedRateList.htm?_ksTS=1431442217626_1472&callback=jsonp_reviews_list&userNumId="+getUserId(itemId)+"&auctionNumId="+itemId+"&siteID=7&currentPageNum=1&rateType="+type+"&orderType=sort_weight&showContent=1&attribute=&ua=";
+		String url = "http://rate.taobao.com/feedRateList.htm?_ksTS=1441442217626_1472&callback=jsonp_reviews_list&userNumId="+getUserId(itemId)+"&auctionNumId="+itemId+"&siteID=7&currentPageNum=1&rateType="+type+"&orderType=sort_weight&showContent=1&attribute=&ua=";
 		for (int i = 1; i < 100; i++) {
 		HttpResponse httpRespons = HttpClientUtil.sendGet(url);
 		url = url.replace("currentPageNum="+i, "currentPageNum="+(i+1));

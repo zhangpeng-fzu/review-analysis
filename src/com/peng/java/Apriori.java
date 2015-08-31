@@ -23,18 +23,17 @@ public class Apriori {
     public static void setminSupport(int minSupport){
 		MIN_SUPPORT = minSupport;
 	}
-    
+
     //读取文件
     public static List<List<String>> getDataSet (){
-        return ReadFile.getDatabase(Config.readFileName);
+        return new ReadFile().getDatabase(Config.readFileName);
     }
-    
+
     //获取频繁1-项集
     public static Map<String, Integer> getFirstFrequent (List<List<String>> record){
         //候选1-项集
 		Map<String, Integer> fisrtCItemSet =  new HashMap<String, Integer>() ;
 		//频繁1-项集
-		Map<String, Integer> fisrtFItemSet =  new HashMap<String, Integer>() ;
         for(List<String> string:record){
 			for(String key:string){
 				if(fisrtCItemSet.get(key) == null){
@@ -45,19 +44,20 @@ public class Apriori {
             }
         }
         //项集剪枝
-        fisrtFItemSet = pruning(fisrtCItemSet);
-        return fisrtFItemSet ;
+        return pruning(fisrtCItemSet) ;
     }
-    
-    /**
-     * 获取K-候选项集
-     * @param cKItemSet k-候选项集
-     * @return fKItemSet k-频繁项集 
-     */
+
+
+	/**
+	 * @param k
+	 * @param cK_1ItemSet
+	 * @param record
+	 * @return
+	 */
     public static Map<String, Integer> getKCandidate (int k,Map<String, Integer> cK_1ItemSet,List<List<String>> record){
     	String exsitItem  = "";
     	Set<String> set = cK_1ItemSet.keySet(); 
-    	Map<String, Integer> cKItemSet = new HashMap<String, Integer>();
+    	Map<String, Integer> cKItemSet = new HashMap<>();
 		for (String str : set) {
 			for(String item:str.split(" ")){
 				if( ! exsitItem.contains(item)){
@@ -69,7 +69,7 @@ public class Apriori {
 		//获取所有的可能出现的候选集
 		String[] items = exsitItem.trim().split(" ");
 		boolean needPruning = false;
-		ArrayList<String> groups = new ArrayList<String>();
+		ArrayList<String> groups = new ArrayList<>();
 		int nCnt = items.length;
 		int nBit = (0xFFFFFFFF >>> (32 - nCnt));
 		for (int i = 1; i <= nBit; i++) {
@@ -80,30 +80,28 @@ public class Apriori {
 				}
 			}
 			//对生成的项集进行剪枝生成候选集
-			if(item.toString().trim().split(" ").length == k){
-				//控制是否剪枝 比较性能 
-				if(prunnedItemset.size() != 0){
-					for(String key:prunnedItemset){
-						needPruning = true;
-						//TODO bug T10 包含T1 如果剪枝结合中有T1 则T10也会被剪掉  
-						//解决方案  生成事物集时用ABCD...代替T1 T2...
-						for(String keyItem:key.split(" ")){
-							if( ! item.toString().trim().contains(keyItem)){
-								needPruning = false;
-							}
-						}
-						//如果被剪枝的是该项目集的子集 就不加入到候选集中
-						if(needPruning){
-							break;
+			//控制是否剪枝 比较性能
+			if(item.toString().trim().split(" ").length == k && prunnedItemset.size() != 0){
+				for(String key:prunnedItemset){
+					needPruning = true;
+					//TODO bug T10 包含T1 如果剪枝结合中有T1 则T10也会被剪掉
+					//解决方案  生成事物集时用ABCD...代替T1 T2...
+					for(String keyItem:key.split(" ")){
+						if( ! item.toString().trim().contains(keyItem)){
+							needPruning = false;
 						}
 					}
-					//不需要被剪枝  加入候选集计算支持度
-					if( ! needPruning){
-						groups.add(item.toString());
-					}else{
-						//剪枝 加入到剪枝的集合中
-						prunnedItemset.add(item.toString());
+					//如果被剪枝的是该项目集的子集 就不加入到候选集中
+					if(needPruning){
+						break;
 					}
+				}
+				//不需要被剪枝  加入候选集计算支持度
+				if( ! needPruning){
+					groups.add(item.toString());
+				}else{
+					//剪枝 加入到剪枝的集合中
+					prunnedItemset.add(item.toString());
 				}
 			}
 		}
@@ -136,17 +134,17 @@ public class Apriori {
 		}
 		return cKItemSet;
     }
-    
-    /**
-     * 获取K-频繁项集
-     * @param cKItemSet k-候选项集
-     * @return fKItemSet k-频繁项集 
-     */
-    public static Map<String, Integer> getKFrequent (int k,Map<String, Integer> cK_1ItemSet,List<List<String>> record){
+
+	/**
+	 * 获取K-频繁项集
+	 * @param k
+	 * @param cK_1ItemSet
+	 * @param record
+	 * @return
+	 */
+    public static Map<String,Integer>getKFrequent (int k,Map<String,Integer>cK_1ItemSet,List<List<String>> record){
 		//频繁k-项集
-		Map<String, Integer> fKItemSet =  new HashMap<String, Integer>() ;
-        fKItemSet = pruning(getKCandidate(k, cK_1ItemSet,record));
-		return fKItemSet;
+		return pruning(getKCandidate(k, cK_1ItemSet,record));
     }
     
     /**
@@ -170,8 +168,8 @@ public class Apriori {
     
     public static Map<Integer, String> test(){
     	List<List<String>> record = getDataSet();    //获取数据库记录 生成事物集
-    	Map<String, Integer> fk_1Itemset = new HashMap<String, Integer>();   //k-1频繁项集
-        Map<Integer, Map<String, Integer>> fKItemMap = new HashMap<Integer, Map<String,Integer>>();  //k频繁项集
+    	Map<String,Integer> fk_1Itemset;   //k-1频繁项集
+        Map<Integer,Map<String,Integer>> fKItemMap = new HashMap<>();  //k频繁项集
         int k = 2;
         Map<String, Integer> fkItemset = getFirstFrequent(record);
         while(fkItemset.size() > 0){
@@ -195,9 +193,8 @@ public class Apriori {
     }
 
     public static void main(String[] args) {
-//    	setminSupport(157);
-		
-		System.out.println(Apriori.test().get(3));
+
+		System.out.println(Apriori.test().get(2));
 	}
 
 }

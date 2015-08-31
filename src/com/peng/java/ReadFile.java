@@ -13,13 +13,13 @@ import java.util.List ;
 import com.peng.config.Config;
 
 public class ReadFile{
-	public static BufferedReader reader;
-	public static  FileOutputStream outputStream;
+	public  BufferedReader reader;
+	public FileOutputStream outputStream;
 	static List<List<String>> dataList ;
 	
-	public static List<List<String>> getDatabase(String fileName){
+	public List<List<String>> getDatabase(String fileName){
 		try{
-			dataList = new ArrayList<List<String>>();
+			dataList = new ArrayList<>();
 			File file = new File(fileName);
 			outputStream = new FileOutputStream(Config.writeFileNameString);
 			if (file.isFile() && file.exists()){
@@ -86,6 +86,6 @@ public class ReadFile{
 	
 	public static void main(String[] args) {
 		System.out.println(Apriori.test().get(3));
-		ReadFile.getDatabase(Config.readFileName);
+		new ReadFile().getDatabase(Config.readFileName);
 	}
 }

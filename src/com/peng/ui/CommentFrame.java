@@ -40,21 +40,18 @@ public class CommentFrame extends JFrame implements ActionListener{
 	static Map<Integer, Map<String, Integer>> map = null;
 	static Map<Integer,String> comment = new HashMap<Integer, String>();
 	static String  fileName = null;
-	JTextArea showComment,showWord,countView,goodArea,badArea,getgoodArea,getbadArea,frenqwordArea,opinionArea;
-	JButton get,split,pickFrenqWord,pickopinionword,key,keyword,num,getclass,frenqWord,starimage,typeimage;
-	JTextField id,goodnumField,normalnumField,badnumField;
+	JTextArea showComment,showWord,goodArea,badArea,getgoodArea,getbadArea;
+	JButton get,split,pickFrenqWord,pickopinionword,num,getclass,starimage,typeimage;
+	JTextField id;
 	JTextField starField[],typeField[];
 	public CommentFrame(String name){
 		super(name);
-		Characteristic.positive();
-		Characteristic.negative();
-		Characteristic.characterist();
-		Characteristic.opinion();
+		Characteristic.loadedVocabulary();
 		Container c= getContentPane();
 		
 		JPanel getPanel = new JPanel();
 		JLabel ItemId = new JLabel("商品ID");
-		id = new JTextField("42800618881",10);
+		id = new JTextField("19260270260",10);
 		get = new JButton("获取评论");
 		getPanel.setLayout(null);
 		ItemId.setBounds(new Rectangle(30, 10, 40, 25));
@@ -83,7 +80,6 @@ public class CommentFrame extends JFrame implements ActionListener{
 			
 		
 	    JPanel panel = new JPanel();
-		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT,10,15));
 	
 		
@@ -206,16 +202,21 @@ public class CommentFrame extends JFrame implements ActionListener{
 			}
 			fileName = Config.FILEPATH +id.getText()+".txt";
 			File file = new File(fileName);
-			//如果文件不存在 去淘宝抓取
-			if ( ! file.exists()) {
+			//如果文件不存在或者存在但是没记录 就去淘宝抓取
+			if ( ! file.exists() || (file.exists() && file.length() < Config.MIN_FILE_LENGTH)) {
 				Comment.getAllComment(id.getText());
 			}
+
 			try {
 				int i = 0;
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileName))));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 				String line = null ;
 				while ( (line = reader.readLine())!=null){
 					if (line.contains("stop")) {
+						if (i == 0){
+							JOptionPane.showMessageDialog(null, "该商品没有评论", "提示", JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
 						flag = true;
 						continue;
 					}

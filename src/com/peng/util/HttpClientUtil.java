@@ -29,8 +29,7 @@ public class HttpClientUtil {
 	/**
 	 * 发送GET请求
 	 * 
-	 * @param urlString
-	 *            URL地址
+	 * @param urlString URL地址
 	 * @return 响应对象
 	 * @throws IOException
 	 */
@@ -40,7 +39,6 @@ public class HttpClientUtil {
 	
 	/**
 	 * 发送HTTP请求
-	 * 
 	 * @param urlString
 	 * @return 响映对象
 	 * @throws IOException
@@ -49,15 +47,15 @@ public class HttpClientUtil {
 			Map<String, String> parameters, Map<String, String> propertys)
 			throws IOException {
 		HttpURLConnection urlConnection = null;
- 
 		if (method.equalsIgnoreCase("GET") && parameters != null) {
 			StringBuffer param = new StringBuffer();
 			int i = 0;
 			for (String key : parameters.keySet()) {
-				if (i == 0)
+				if (i == 0){
 					param.append("?");
-				else
+				} else{
 					param.append("&");
+				}
 				param.append(key).append("=").append(parameters.get(key));
 				i++;
 			}
@@ -97,13 +95,11 @@ public class HttpClientUtil {
 	 * @return 响应对象
 	 * @throws IOException
 	 */
-	private static HttpResponse makeContent(String urlString,
-			HttpURLConnection urlConnection) throws IOException {
+	private static HttpResponse makeContent(String urlString, HttpURLConnection urlConnection) throws IOException {
 		HttpResponse response = new HttpResponse();
 		try {
 			InputStream in = urlConnection.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(in));
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
 			Vector<String> v = new Vector<String>();
 			StringBuffer temp = new StringBuffer();
 			String line = bufferedReader.readLine();
@@ -116,9 +112,10 @@ public class HttpClientUtil {
 			bufferedReader.close();
  
 			String ecod = urlConnection.getContentEncoding();
-			if (ecod == null)
+			if (ecod == null){
 				ecod = defaultContentEncoding;
- 
+			}
+
 			response.setUrlString(urlString);
  
 			response.setDefaultPort(urlConnection.getURL().getDefaultPort());
@@ -130,9 +127,8 @@ public class HttpClientUtil {
 			response.setQuery(urlConnection.getURL().getQuery());
 			response.setRef(urlConnection.getURL().getRef());
 			response.setUserInfo(urlConnection.getURL().getUserInfo());
- 
-//			response.setContent(new String(temp.toString().getBytes(), ecod));
-//			response.setContentEncoding(ecod);
+			response.setContent(new String(temp.toString().getBytes(), ecod));
+			response.setContentEncoding(ecod);
 			response.setCode(urlConnection.getResponseCode());
 			response.setMessage(urlConnection.getResponseMessage());
 			response.setContentType(urlConnection.getContentType());
