@@ -1,0 +1,74 @@
+.com_toolbar {
+    height:40px;
+    background-color: #f2f2f2;
+    font: 15px "Microsoft YaHei", STXihei, sans-serif;
+    /*line-height:40px;*/
+    color:#fff;
+    /*position : relative;*/
+    /*text-overflow: ellipsis;*/
+}
+
+.com_toolbar label{
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.com_toolbar a{
+    color: #333333;
+    line-height:40px;
+
+}
+.com_toolbar span{
+    color: #333333;
+    line-height:35px;
+
+}
+.com_toolbar img{
+    vertical-align: middle;
+
+}
+.com_toolbar .separator{
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.com_toolbar .icon {
+    padding-right: 3px;
+}
+.content_container{
+    padding-bottom:90px;
+    margin:0 auto;
+    width:1200px;
+    font-family: "微软雅黑";
+}
+.content_path {
+    color: #ffffff;
+}
+
+.ft-right{
+    float:right;
+}
+
+.ft-left{
+    float:left;
+}
+.ml5{
+    margin-left:5px;
+}
+.mv10{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.ph10{
+    padding-left:10px;
+    padding-right:10px;
+}
+.pv10{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+.home-ul{
+    margin:10px 0 0 20px;
+}
+.clear{
+    clear:both;
+}

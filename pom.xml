@@ -70,7 +70,6 @@
     </dependencies>
 
 
-
     <distributionManagement>
         <repository>
             <id>java-releases</id>
