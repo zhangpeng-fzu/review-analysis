@@ -1,6 +1,6 @@
 package com.peng.service;
 
-import com.peng.config.Config;
+import com.peng.common.Config;
 
 import java.io.*;
 import java.util.ArrayList;

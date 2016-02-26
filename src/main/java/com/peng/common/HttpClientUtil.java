@@ -1,6 +1,5 @@
-package com.peng.util;
+package com.peng.common;
 
-import com.peng.config.Config;
 import com.peng.entity.ResponseEntity;
 
 import java.io.BufferedReader;

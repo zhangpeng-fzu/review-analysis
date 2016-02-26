@@ -1,8 +1,7 @@
 package com.peng.service;
 
 
-import com.peng.config.Config;
-import com.peng.util.ReadFile;
+import com.peng.common.Config;
 
 import java.util.*;
 
@@ -11,7 +10,7 @@ import java.util.*;
  * @author MZhang
  * @since 2015-4-8
  */
-public class Apriori {
+public class AprioriAlgorithm {
 	
     private static List<String> prunnedItemset = new ArrayList<String>();           //被剪枝的项目集
     private static int MIN_SUPPORT = 157;     //最小主持度
@@ -190,7 +189,7 @@ public class Apriori {
 
     public static void main(String[] args) {
 
-		System.out.println(Apriori.test().get(2));
+		System.out.println(AprioriAlgorithm.test().get(2));
 	}
 
 }

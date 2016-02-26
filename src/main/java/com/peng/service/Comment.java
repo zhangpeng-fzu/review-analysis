@@ -2,16 +2,17 @@ package com.peng.service;
 
 
 import com.alibaba.fastjson.JSON;
-import com.peng.config.Config;
+import com.peng.common.Config;
 import com.peng.entity.ReplyEntity;
 import com.peng.entity.ResponseEntity;
-import com.peng.util.HttpClientUtil;
-import org.wltea.analyzer.IKSegmentation;
-import org.wltea.analyzer.Lexeme;
+import com.peng.common.HttpClientUtil;
 
-import java.io.*;
-import java.util.*;
-import java.util.Map.Entry;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,75 +95,9 @@ public class Comment {
         return userId;
     }
 
-    /**
-     * 对文件进行分词
-     * @param fileName
-     * @return
-     */
-    public static Map<Integer, Map<String, Integer>> splitCommentsInFile(String fileName) {
-        //分词操作
-        BufferedReader reader;
-        Map<String, Integer> wordsFrenMaps = new HashMap<>();
-        Map<Integer, Map<String, Integer>> splitCommentMap = new HashMap<Integer, Map<String, Integer>>();
-        IKSegmentation ikSegmenter;
-        Lexeme lexeme;
-        String line;
-        try {
-            int i = 0;
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileName))));
-            while ((line = reader.readLine()) != null) {
-                ikSegmenter = new IKSegmentation(new StringReader(line), true);
-                while ((lexeme = ikSegmenter.next()) != null) {
-                    if (lexeme.getLexemeText().length() <= 1) {
-                        continue;
-                    }
-                    if (wordsFrenMaps.containsKey(lexeme.getLexemeText())) {
-                        wordsFrenMaps.put(lexeme.getLexemeText(), wordsFrenMaps.get(lexeme.getLexemeText()) + 1);
-                    } else {
-                        wordsFrenMaps.put(lexeme.getLexemeText(), 1);
-                    }
-                }
-                splitCommentMap.put(i, wordsFrenMaps);
-                i++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return splitCommentMap;
-    }
-
-    /**
-     * 进行词频统计排序
-     *
-     * @param wordsFrenMaps
-     * @return
-     */
-    public static List<Entry<String, Integer>> sortSegmentResult(Map<String, Integer> wordsFrenMaps) {
-        //这里将map.entrySet()转换成list
-        List<Entry<String, Integer>> list = new ArrayList<Entry<String, Integer>>(wordsFrenMaps.entrySet());
-        //然后通过比较器来实现排序
-        Collections.sort(list, new Comparator<Entry<String, Integer>>() {
-            //升序排序
-            @Override
-            public int compare(Entry<String, Integer> o1,
-                               Entry<String, Integer> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
-        return list;
-    }
-
-
     public static void main(String[] args) {
-//        for (long i = 524313454205L;i < 624313454205L;i++){
-//            System.out.println(i);
-//            String userId = getUserId(String.valueOf(524313454206L));
-////            if (StringUtils.isBlank(userId)){
-////                continue;
-////            }
-//            getComment(String.valueOf(524313454206L), 0,userId);
-//        }
-        splitCommentsInFile("./file/524313454205.txt");
+        Segmentation segmentation = new Segmentation();
+        segmentation.splitCommentsInFile("./file/524313454205.txt");
     }
 
 }

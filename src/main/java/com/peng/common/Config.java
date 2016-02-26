@@ -1,4 +1,4 @@
-package com.peng.config;
+package com.peng.common;
 
 public class Config {
 	public final  int MIN_SUPPORT = 200;
@@ -9,13 +9,13 @@ public class Config {
 	//获取到的评论文件位置（相对路径）
 	public final static String FILEPATH = "./file/";
 	//正向词汇文件路径
-	public final static String POSITIVE_PATH = "./src/com/peng/config/positive.txt";
+	public final static String POSITIVE_PATH = "./src/com/peng/dictionary/positive.txt";
 	//负向词汇文件路径
-	public final static String NEGATIVE_PATH = "./src/com/peng/config/negative.txt";
+	public final static String NEGATIVE_PATH = "./src/com/peng/dictionary/negative.txt";
 	//特征词汇文件路径
-	public final static String CHARACTERISTIC_PATH = "./src/com/peng/config/characteristic.txt";
+	public final static String CHARACTERISTIC_PATH = "./src/com/peng/dictionary/characteristic.txt";
 	//观点词汇文件路径
-	public final static String OPINION_PATH = "./src/com/peng/config/opinionWord.txt";
+	public final static String OPINION_PATH = "./src/com/peng/dictionary/opinionWord.txt";
 	//文件最小大小 至少有"stop"
 	public final static int MIN_FILE_LENGTH = 6;
 
